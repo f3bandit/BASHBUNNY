@@ -249,3 +249,4 @@ lsof_4.86+dfsg-1_armhf.deb
 libperl4-corelibs-perl_0.003-1_all.deb
 perl-modules_5.20.2-3+deb8u11_all.deb
 htop_1.0.3-1_armhf.deb
+psmisc_22.21-2_armhf.deb
