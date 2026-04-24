@@ -243,3 +243,5 @@ socat_1.7.2.4-2_armhf.deb
 libwrap0_7.6.q-25_armhf.deb
 telnet_0.17-36_armhf.deb
 whois_5.2.7_armhf.deb
+ltrace_0.7.3-4_armhf.deb
+libelfg0_0.8.13-5_armhf.deb
