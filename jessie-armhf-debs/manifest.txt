@@ -263,3 +263,4 @@ libmpc3_1.0.2-1_armhf.deb
 libmpfr4_3.1.2-2_armhf.deb
 libgomp1_4.9.2-10+deb8u1_armhf.deb
 libatomic1_4.9.2-10+deb8u1_armhf.deb
+libasan1_4.9.2-10+deb8u1_armhf.deb
