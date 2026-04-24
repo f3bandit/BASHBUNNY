@@ -245,3 +245,6 @@ telnet_0.17-36_armhf.deb
 whois_5.2.7_armhf.deb
 ltrace_0.7.3-4_armhf.deb
 libelfg0_0.8.13-5_armhf.deb
+lsof_4.86+dfsg-1_armhf.deb
+libperl4-corelibs-perl_0.003-1_all.deb
+perl-modules_5.20.2-3+deb8u11_all.deb
