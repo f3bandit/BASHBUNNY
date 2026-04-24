@@ -239,3 +239,5 @@ bind9-host_9.9.5.dfsg-9+deb8u15_armhf.deb
 libattr1_2.4.47-2_armhf.deb
 libgeoip1_1.6.2-4_armhf.deb
 libisccc90_9.9.5.dfsg-9+deb8u15_armhf.deb
+socat_1.7.2.4-2_armhf.deb
+libwrap0_7.6.q-25_armhf.deb
