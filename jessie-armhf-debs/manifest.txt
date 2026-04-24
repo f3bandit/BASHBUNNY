@@ -259,3 +259,5 @@ mime-support_3.58_all.deb
 p7zip-full_9.20.1~dfsg.1-4.1+deb8u3_armhf.deb
 libcloog-isl4_0.18.2-1+b2_armhf.deb
 libisl10_0.12.2-2_armhf.deb
+libmpc3_1.0.2-1_armhf.deb
+libmpfr4_3.1.2-2_armhf.deb
