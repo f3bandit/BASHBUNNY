@@ -211,3 +211,16 @@ libgfortran3_4.9.2-10+deb8u1_armhf.deb
 libblas-common_1.2.20110419-10_armhf.deb
 strace_4.9-2_armhf.deb
 zip_3.0-8_armhf.deb
+curl_7.38.0-4+deb8u11_armhf.deb
+libcurl3_7.38.0-4+deb8u11_armhf.deb
+libgssapi-krb5-2_1.12.1+dfsg-19+deb8u4_armhf.deb
+libk5crypto3_1.12.1+dfsg-19+deb8u4_armhf.deb
+libkrb5-3_1.12.1+dfsg-19+deb8u4_armhf.deb
+libldap-2.4-2_2.4.40+dfsg-1+deb8u4_armhf.deb
+librtmp1_2.4+20150115.gita107cef-1+deb8u1_armhf.deb
+libssh2-1_1.4.3-4.1+deb8u1_armhf.deb
+libkeyutils1_1.5.9-5+b1_armhf.deb
+libkrb5support0_1.12.1+dfsg-19+deb8u4_armhf.deb
+libsasl2-2_2.1.26.dfsg1-13+deb8u1_armhf.deb
+libgmp10_6.0.0+dfsg-6_armhf.deb
+libsasl2-modules-db_2.1.26.dfsg1-13+deb8u1_armhf.deb
