@@ -46,7 +46,7 @@ BASHBUNNY/
 │
 ├── scripts/                    ← Installer and test scripts
 │   ├── install_bb_aio.sh   ← Main installer (current version)
-│   └── test_wrappers_v2.sh           ← Tool verification script
+│   └── test_wrappers.sh           ← Tool verification script
 │
 └── docs/
     ├── PACKAGE_LIST.md         ← Full list of all packages with versions
