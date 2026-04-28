@@ -45,7 +45,7 @@ BASHBUNNY/
 │   └── macchanger-1.7.0.tar.gz ← Built from source during install
 │
 ├── scripts/                    ← Installer and test scripts
-│   ├── install_bb_aio_v27_fixed.sh   ← Main installer (current version)
+│   ├── install_bb_aio.sh   ← Main installer (current version)
 │   └── test_wrappers_v2.sh           ← Tool verification script
 │
 └── docs/
@@ -73,11 +73,11 @@ ssh root@172.16.64.1
 udisk mount
 
 # Copy installer to BB (from Windows host)
-# Copy scripts/install_bb_aio_v27_fixed.sh to BB udisk root/udisk/scripts/
+# Copy scripts/install_bb_aio.sh to BB udisk root/udisk/scripts/
 
 # Run installer
 cd /root/udisk/scripts
-./install_bb_aio_v27_fixed.sh
+./install_bb_aio.sh
 
 # Reload shell after completion
 exec /bin/bash -l
