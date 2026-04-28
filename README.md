@@ -173,19 +173,6 @@ header fallback for clock sync.
 
 ---
 
-## Script Versions
-
-| Version | Change |
-|---------|--------|
-| v22 | Original ChatGPT-generated version |
-| v23 | Fixed `generate_local_repo` (dpkg-scanpackages), fixed `install_deb_by_pkg` glob |
-| v24 | Added `fix_clock()` as first step, added `--no-check-certificate` fallback |
-| v25 | Fixed dpkg-scanpackages dep install order |
-| v26 | Added `libtimedate-perl` to dep chain, `dpkg --configure -a` after each dep |
-| v27 | Added `EXCLUDED_PKGS` list, excluded `libsigc++-2.0-0c2a` (stock fw conflict) |
-
----
-
 ## Hardware Requirements
 
 - **Device**: Bash Bunny Mark II only (not Mark I)
