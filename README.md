@@ -1,182 +1,204 @@
-# Bash Bunny Jessie Offline Package System
+# BASHBUNNY — Bash Bunny Mark II Package Repository
 
-A reproducible offline package system for the Hak5 Bash Bunny (Debian Jessie armhf).
-
-This project restores a working package manager, fixes dependency issues, and provides a trimmed, practical toolset for development, debugging, and networking.
-
----
-
-## Overview
-
-The Bash Bunny ships with an outdated Debian Jessie environment. Because Jessie is end-of-life, package repositories are no longer maintained, which causes:
-
-- Broken `apt-get`
-- Failed dependency resolution
-- Incomplete or inconsistent installs
-- Inability to install new tools reliably
-
-This project solves those issues by creating a local package repository and installing packages in a controlled, dependency-aware way.
+A self-contained offline package repository and installer for the Hak5 Bash Bunny Mark II.
+Designed to extend the stock Debian Jessie firmware with security tools, a build toolchain,
+Python 3, and custom Bunny-specific tools — without requiring access to archive.debian.org.
 
 ---
 
-## What This Fixes
+## What This Repo Does
 
-- Restores a working package system
-- Enables offline installs after initial setup
-- Eliminates `dpkg` dependency errors
-- Fixes broken system packages (e.g. `procps`, `udev`)
-- Provides a stable, repeatable environment
+The stock Bash Bunny Mark II ships with **Debian 8 Jessie** (EOL June 2018).
+Standard `apt-get update` fails because Jessie mirrors are gone.
 
----
+This repo provides:
 
-## How It Works
+1. A cached set of Jessie armhf `.deb` packages hosted directly on GitHub
+2. A Python 3.4 stack for the Jessie environment
+3. Custom Bunny tool packages (gohttp, impacket, metasploit, responder)
+4. An all-in-one installer script that downloads, validates, and installs everything
+5. A test script to verify all tools are working
 
-1. Downloads Debian Jessie armhf packages from the archived repository
-2. Caches all required `.deb` files locally
-3. Builds a local APT repository on the Bunny
-4. Installs only a trimmed set of useful packages
-5. Uses APT to resolve dependencies in the correct order
+All packages are downloaded over HTTPS from this GitHub repo. No external mirrors needed.
 
 ---
 
-## Installed Package Set
+## Repository Structure
 
-### Build Tools
-- build-essential
-- gcc
-- g++
-- make
-- libc6-dev
-- pkg-config
-- autoconf
-- automake
-- libtool
-- patch
-- perl
-- python
-- dpkg
-- dpkg-dev
-- fakeroot
-
-### Core Utilities
-- tar
-- gzip
-- bzip2
-- xz-utils
-- unzip
-- file
-- wget
-- curl
-- ca-certificates
-
-### Networking Tools
-- iproute2
-- iptables
-- net-tools
-- iputils-ping
-- arping
-- netcat-openbsd
-- tcpdump
-- nmap
-- socat
-
-### Diagnostics / Shell
-- tmux
-- htop
-- lsof
-- strace
-- pv
-- vim-tiny
-- vim-common
-- nano
-
-### Analysis
-- radare2
+```
+BASHBUNNY/
+├── jessie-armhf-debs/          ← Debian Jessie armhf .deb cache (271 packages)
+│   ├── manifest.txt            ← List of all .deb filenames
+│   ├── checksums.md5           ← MD5 checksums for all .deb files
+│   └── *.deb                   ← Package files
+│
+├── python3/                    ← Python 3.4 stack for Jessie armhf (25 packages)
+│   ├── manifest.txt
+│   └── *.deb
+│
+├── tools/                      ← Custom Bunny tool packages (5 files)
+│   ├── manifest.txt
+│   ├── gohttp-bunny.deb
+│   ├── impacket-bunny.deb
+│   ├── metasploit-bunny.deb
+│   ├── responder-bunny.deb
+│   └── macchanger-1.7.0.tar.gz ← Built from source during install
+│
+├── scripts/                    ← Installer and test scripts
+│   ├── install_bb_aio_v27_fixed.sh   ← Main installer (current version)
+│   └── test_wrappers_v2.sh           ← Tool verification script
+│
+└── docs/
+    ├── PACKAGE_LIST.md         ← Full list of all packages with versions
+    ├── JESSIE_CHECKSUMS.md     ← MD5/SHA256 checksums for Jessie debs
+    └── KNOWN_CONFLICTS.md      ← Known package conflicts with stock BB firmware
+```
 
 ---
 
-## Package Source
+## Quick Start
 
-Packages are sourced from:
+### Prerequisites
+- Bash Bunny Mark II on stock firmware 1.7
+- Internet access via RNDIS/ECM USB ethernet (host PC sharing connection)
+- SSH access to the BB (`ssh root@172.16.64.1`)
 
-http://archive.debian.org/debian
+### Install
 
-Architecture:
+```bash
+# SSH into the Bash Bunny
+ssh root@172.16.64.1
 
-armhf (ARMv7)
+# Mount the udisk if not already mounted
+udisk mount
 
-Packages are stored in this repository under:
+# Copy installer to BB (from Windows host)
+# Copy scripts/install_bb_aio_v27_fixed.sh to BB udisk root/udisk/scripts/
 
-jessie-armhf-debs/
+# Run installer
+cd /root/udisk/scripts
+./install_bb_aio_v27_fixed.sh
 
----
+# Reload shell after completion
+exec /bin/bash -l
+```
 
-## Usage
+### Verify Installation
 
-### 1. Copy Script to Bunny
-
-cp install_bb_aio_v8_trimmed_targets_full_repo.sh /root/udisk/scripts/install_bb_aio.sh
-
-### 2. Run Installer
-
-sh /root/udisk/scripts/install_bb_aio.sh
-
----
-
-## First Run Requirement
-
-Set the Bash Bunny switch to:
-SWITCH 1 (arming mode)
-This allows the device to access the network and download required packages.
-
----
-
-## Offline Usage
-
-After the initial run, the system can operate fully offline:
-sh install_bb_aio.sh
-All packages will be installed from:
-/root/bb_updates/localrepo
+```bash
+cd /root/udisk/scripts
+./test_wrappers_v2.sh
+```
 
 ---
 
-## Manual Package Installation
+## What Gets Installed
 
-### Using APT (Recommended)
+### Build Toolchain
+- gcc 4.9.2, g++ 4.9.2, cpp 4.9.2
+- make, autoconf, automake, libtool
+- binutils, pkg-config, patch, m4
+- build-essential, fakeroot, dpkg-dev
 
-apt-get
--o Dir::Etc::sourcelist=/etc/apt/sources.list.d/bb-local.list
--o Dir::Etc::sourceparts=-
-install <package>
+### Python 3
+- Python 3.4.2 + pip
+- python3-requests, python3-setuptools, python3-pip
+- Full dev stack: python3-dev, python3.4-dev, libpython3.4-dev
 
+### Networking & Security Tools
+- nmap, tcpdump, netcat-traditional, socat
+- curl, wget, dnsutils, traceroute
+- aircrack-ng, iw, wireless-tools
+- whois, telnet, iputils-ping
 
-Example:
-apt-get install git
+### Debug & Analysis Tools
+- strace, ltrace, lsof, gdb
+- htop, procps, psmisc
+- sqlite3, p7zip-full
+
+### Custom Bunny Tools
+- **gohttp** — lightweight HTTP server for file serving payloads
+- **impacket** — Python network protocol library (SMB, NTLM, etc.)
+- **metasploit-framework** — penetration testing framework
+- **responder** — LLMNR/NBT-NS/MDNS poisoner
+- **macchanger 1.7.0** — MAC address changer (built from source)
+
+### Shell Environment
+- Color PS1 prompt (`user@bb:dir# `)
+- Aliases: `ll`, `la`, `l`, `ls --color`, `grep --color`
+- `applytheme` — reapply color profile
+- `reloadtheme` — reload login shell
+- `colortest` — test terminal color support
+- `restoreprofile` — restore original `.profile`
 
 ---
 
-### Using dpkg
+## Package Sources
 
-cd /root/bb_updates/debs
-dpkg -i package.deb
-apt-get -f install
+### Jessie Packages
+All Jessie armhf packages were sourced from:
+```
+https://archive.debian.org/debian/pool/main/
+```
+Archived at the time of collection. Packages are pinned to their exact Jessie versions
+and will not be updated by apt after install (local repo only, no live mirror).
+
+### Python 3 Packages
+Python 3.4 stack sourced from Jessie archive. Python 3.4 is the latest Python 3
+version available for Debian Jessie armhf.
+
+### Custom Tools
+- **gohttp**: Custom Bunny-specific build
+- **impacket**: Packaged from impacket source for armhf
+- **metasploit**: Packaged for BB armhf environment
+- **responder**: Packaged from Responder project source
+- **macchanger**: Source tarball from https://github.com/alobbs/macchanger (v1.7.0)
 
 ---
 
-### Adding New Packages
+## Known Issues & Conflicts
 
-1. Place `.deb` files into:
-/root/bb_updates/debs
+### libsigc++-2.0-0c2a
+The stock BB firmware ships with `libstdc++6 6.3.0-18+deb9u1` (Stretch-era),
+which conflicts with the Jessie version of `libsigc++-2.0-0c2a 2.4.0-1`.
+The installer automatically excludes this package. No tools in this repo require it.
 
-2. Rebuild the local repo:
-cd /root/bb_updates/localrepo
+### Clock / TLS
+The BB clock defaults to 2021. The installer syncs time via HTTP header before
+any HTTPS downloads so TLS certificate validation works.
 
-rm -f Packages Packages.gz
+### ntpdate
+`ntpdate` is not present on stock BB firmware. The installer uses an HTTP Date
+header fallback for clock sync.
 
-for deb in *.deb; do
-dpkg-deb -f "$deb" >> Packages
-echo "Filename: ./$deb" >> Packages
-echo "" >> Packages
-done
+---
 
-gzip -c Packages > Packages.gz
+## Script Versions
+
+| Version | Change |
+|---------|--------|
+| v22 | Original ChatGPT-generated version |
+| v23 | Fixed `generate_local_repo` (dpkg-scanpackages), fixed `install_deb_by_pkg` glob |
+| v24 | Added `fix_clock()` as first step, added `--no-check-certificate` fallback |
+| v25 | Fixed dpkg-scanpackages dep install order |
+| v26 | Added `libtimedate-perl` to dep chain, `dpkg --configure -a` after each dep |
+| v27 | Added `EXCLUDED_PKGS` list, excluded `libsigc++-2.0-0c2a` (stock fw conflict) |
+
+---
+
+## Hardware Requirements
+
+- **Device**: Bash Bunny Mark II only (not Mark I)
+- **Firmware**: Stock 1.7 (ch_fw_1.7_332)
+- **SoC**: Allwinner A33 (sun8i), quad-core ARM Cortex-A7
+- **Kernel**: Linux 3.4.39
+- **Storage**: ~500MB free on nandd (rootfs partition)
+- **RAM**: 512MB
+
+---
+
+## License
+
+Scripts and documentation in this repo are provided as-is for educational and
+authorized security research purposes only. Tool packages retain their original
+licenses. See individual tool documentation for details.
