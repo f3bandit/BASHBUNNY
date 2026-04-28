@@ -87,7 +87,7 @@ exec /bin/bash -l
 
 ```bash
 cd /root/udisk/scripts
-./test_wrappers_v2.sh
+./test_wrappers.sh
 ```
 
 ---
